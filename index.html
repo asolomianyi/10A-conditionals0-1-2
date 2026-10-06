@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conditionals 0, 1, 2</title>
+<style>
+:root{--bg:#f4f6fb;--ink:#15213b;--mut:#5b6784;--card:#fff;--line:#d9deea;--c0:#0b8f83;--c1:#c98200;--c2:#6246ea;--ok:#16874a;--bad:#c62f3d}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1628;--ink:#eaeefb;--mut:#9aa6c4;--card:#18223b;--line:#2b3757;--c0:#3fd2c3;--c1:#f5b73a;--c2:#9b8cff;--ok:#4fd18b;--bad:#ff7a86}}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font:18px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.15;margin:0 0 .4em}
+h1{font-size:clamp(2.4rem,6vw,4.4rem)}
+h2{font-size:clamp(1.7rem,3.6vw,2.5rem);margin-bottom:.1em}
+h3{font-size:1.25rem;margin:1em 0 .2em}
+.uk{color:var(--mut);margin:.1em 0 .8em;font-size:.93em}
+h2+.uk,h3+.uk{margin-top:0}
+.uk::before{content:"UA ";font-size:.7em;font-weight:700;opacity:.7}
+p{margin:.3em 0}
+.deck{height:100%;position:relative}
+.slide{position:absolute;inset:0 0 64px 0;padding:5vh 7vw 2vh;overflow:auto;display:none}
+.slide.on{display:block}
+.wrap{max-width:1000px;margin:0 auto}
+.tag{display:inline-block;padding:.1em .7em;border-radius:99px;color:#fff;font-weight:700;margin-bottom:.6em}
+.z{--c:var(--c0)}.f{--c:var(--c1)}.s{--c:var(--c2)}
+.tag{background:var(--c)}
+.big{border-left:8px solid var(--c);padding-left:20px}
+.formula{background:var(--card);border:2px solid var(--c);border-radius:10px;padding:12px 18px;font-weight:600;margin:10px 0}
+.formula b{color:var(--c)}
+.ex{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 16px;margin:8px 0}
+.ex em{color:var(--c);font-style:normal;font-weight:700}
+.ex .uk::before{content:""}
+.ex .uk{margin:.1em 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin:12px 0}
+.col{background:var(--card);border-top:6px solid var(--c);border-radius:8px;padding:12px 18px}
+table{border-collapse:collapse;width:100%;background:var(--card)}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}
+th{color:#fff}
+td .uk{margin:.2em 0 0}td .uk::before{content:""}
+.q{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 16px;margin:8px 0}
+.q p{margin:0 0 8px;font-weight:600}
+.q p .uk{font-weight:400;margin:0}.q p .uk::before{content:""}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+button.o,button.nav{font:inherit;cursor:pointer;border:2px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:6px 14px}
+button.o:hover{border-color:var(--c2)}
+button.o.right,.q.right input{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 18%,transparent)}
+button.o.wrong,.q.wrong input{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 18%,transparent)}
+input{font:inherit;padding:6px 10px;border:2px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);width:180px}
+.fb{margin-top:6px;min-height:1.4em;font-size:.95em}
+.fb.ok{color:var(--ok)}.fb.bad{color:var(--bad)}
+.bar{position:fixed;left:0;right:0;bottom:0;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 7vw;background:var(--card);border-top:1px solid var(--line)}
+button.nav{font-weight:700}
+button.nav:disabled{opacity:.35;cursor:default}
+.prog{position:fixed;top:0;left:0;height:5px;background:linear-gradient(90deg,var(--c0),var(--c1),var(--c2));transition:width .3s}
+.check{margin-top:10px;font:inherit;font-weight:700;background:var(--c2);color:#fff;border:0;border-radius:8px;padding:8px 18px;cursor:pointer}
+.score{font-size:3rem;font-family:Georgia,serif}
+.mut{color:var(--mut)}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+:focus-visible{outline:3px solid var(--c2);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="prog" id="prog"></div>
+<div class="deck" id="deck">
+
+<section class="slide on"><div class="wrap">
+  <h1>Conditionals:<br>Zero, First, Second</h1>
+  <h2 style="color:var(--mut)">Умовний спосіб: нульовий, перший, другий</h2>
+  <p class="big" style="--c:var(--c2);font-size:1.2em">Conditional sentences: when to use them, how to form them, and practice.</p>
+  <p class="uk">Умовні речення: коли вживати, як утворювати, і практика.</p>
+  <p class="mut">Use ← → keys or the buttons below. / Використовуйте стрілки ← → або кнопки внизу.</p>
+</div></section>
+
+<section class="slide"><div class="wrap">
+  <h2>Three types of conditionals</h2>
+  <p class="uk">Три типи умовних речень</p>
+  <p>A conditional sentence has two parts: the <b>condition</b> (the <i>if</i>-clause) and the <b>result</b> (the main clause).</p>
+  <p class="uk">Умовне речення має дві частини: <b>умову</b> (підрядна частина з <i>if</i>) і <b>наслідок</b> (головна частина).</p>
+  <div class="grid">
+    <div class="col z"><span class="tag">Zero</span><p>General truths, facts, laws of nature.</p><p class="uk">Загальні істини, факти, закони природи.</p><p class="mut">If you heat ice, it melts.</p></div>
+    <div class="col f"><span class="tag">First</span><p>Real situations in the future.</p><p class="uk">Реальні ситуації в майбутньому.</p><p class="mut">If it rains, we will stay home.</p></div>
+    <div class="col s"><span class="tag">Second</span><p>Imaginary or unlikely situations.</p><p class="uk">Уявні або малоймовірні ситуації.</p><p class="mut">If I won, I would travel.</p></div>
+  </div>
+  <p>The two parts can swap places. Use a comma when <i>if</i> comes first: <i>I'll call you if I'm late.</i></p>
+  <p class="uk">Частини можна міняти місцями. Кома потрібна, коли речення починається з <i>if</i>.</p>
+</div></section>
+
+<section class="slide z"><div class="wrap">
+  <span class="tag">Zero Conditional</span>
+  <h2>General truths and facts</h2>
+  <p class="uk">Загальні істини та факти</p>
+  <h3>When we use it</h3><p class="uk">Коли вживається</p>
+  <p>For scientific facts, habits, rules and instructions. The result is <b>always</b> the same. <i>If</i> can be replaced by <i>when</i>.</p>
+  <p class="uk">Для наукових фактів, звичок, правил та інструкцій. Результат <b>завжди</b> однаковий. <i>If</i> можна замінити на <i>when</i>.</p>
+  <h3>How we form it</h3><p class="uk">Як утворюється</p>
+  <div class="formula">If + <b>Present Simple</b>, <b>Present Simple</b></div>
+  <div class="ex">If you heat water to 100°C, it <em>boils</em>.<p class="uk">Якщо нагріти воду до 100°C, вона кипить.</p></div>
+  <div class="ex">Plants die if they <em>don't get</em> light.<p class="uk">Рослини гинуть, якщо не отримують світла.</p></div>
+</div></section>
+
+<section class="slide f"><div class="wrap">
+  <span class="tag">First Conditional</span>
+  <h2>Real future situations</h2>
+  <p class="uk">Реальні ситуації в майбутньому</p>
+  <h3>When we use it</h3><p class="uk">Коли вживається</p>
+  <p>The condition is possible, and we talk about its likely result in the future: plans, promises, warnings, predictions.</p>
+  <p class="uk">Умова цілком можлива, і ми говоримо про її ймовірний результат: плани, обіцянки, попередження, прогнози.</p>
+  <h3>How we form it</h3><p class="uk">Як утворюється</p>
+  <div class="formula">If + <b>Present Simple</b>, <b>will + infinitive</b></div>
+  <div class="ex">If the gym is opened on time, I'll <em>have</em> my training session.<p class="uk">Якщо спортзал відкриють вчасно, я матиму тренування.</p></div>
+  <div class="ex">If I buy a swimming cap, they <em>will allow</em> me to go swimming.<p class="uk">Якщо я куплю шапочку для плавання, мені дозволять плавати.</p></div>
+  <p class="mut">Never use <i>will</i> after <i>if</i>: <s>If I will see him…</s> ✗. / Не вживаємо <i>will</i> після <i>if</i>.</p>
+</div></section>
+
+<section class="slide s"><div class="wrap">
+  <span class="tag">Second Conditional</span>
+  <h2>Imaginary present or future</h2>
+  <p class="uk">Уявне теперішнє або майбутнє</p>
+  <h3>When we use it</h3><p class="uk">Коли вживається</p>
+  <p>The situation is unreal or unlikely: we imagine what would happen. Also for advice: <i>If I were you…</i></p>
+  <p class="uk">Ситуація нереальна або малоймовірна: ми уявляємо, що було б. Також для порад: <i>If I were you…</i></p>
+  <h3>How we form it</h3><p class="uk">Як утворюється</p>
+  <div class="formula">If + <b>Past Simple</b>, <b>would + infinitive</b></div>
+  <div class="ex">If I won the race, I <em>would go</em> to Sydney. (the race has not begun yet)<p class="uk">Якби я виграв гонку, я б поїхав до Сіднея. (гонка ще не почалася)</p></div>
+  <div class="ex">If I knew my results in advance, I <em>would not worry</em> so much.<p class="uk">Якби я знав результати заздалегідь, я б так не хвилювався.</p></div>
+  <p class="mut">Past Simple here is not about the past. With <i>be</i> use <b>were</b> for all persons. / Past Simple тут не про минуле. З <i>be</i> вживаємо <b>were</b> для всіх осіб.</p>
+</div></section>
+
+<section class="slide"><div class="wrap">
+  <h2>Comparison</h2>
+  <p class="uk">Порівняння</p>
+  <table>
+    <tr><th style="background:var(--c0)">Zero</th><th style="background:var(--c1)">First</th><th style="background:var(--c2)">Second</th></tr>
+    <tr><td>If + Present Simple, Present Simple</td><td>If + Present Simple, will + V</td><td>If + Past Simple, would + V</td></tr>
+    <tr><td>Facts, laws, rules<p class="uk">Факти, закони, правила</p></td><td>Real future possibility<p class="uk">Реальна можливість у майбутньому</p></td><td>Imaginary, unlikely situation<p class="uk">Уявна, малоймовірна ситуація</p></td></tr>
+    <tr><td>If ice melts, it turns to water.</td><td>If it snows, I will build a snowman.</td><td>If it snowed in July, I would be shocked.</td></tr>
+  </table>
+  <p class="mut">Next: 4 exercises. / Далі: 4 вправи.</p>
+</div></section>
+
+<section class="slide" id="results"><div class="wrap" style="text-align:center">
+  <h2>Result</h2><p class="uk" style="text-align:center">Результат</p>
+  <div class="score" id="score">0 / 0</div>
+  <p id="verdict" class="mut"></p>
+  <button class="check" onclick="location.reload()">Start over / Почати спочатку</button>
+</div></section>
+</div>
+
+<div class="bar">
+  <button class="nav" id="prev">← Back / Назад</button>
+  <span id="count" class="mut"></span>
+  <button class="nav" id="next">Next / Далі →</button>
+</div>
+
+<script>
+const EX=[
+{t:["Exercise 1. Choose the correct form","Вправа 1. Оберіть правильну форму"],type:"choice",items:[
+ ["If you heat ice, it ___.",["melts","will melt","would melt"],0],
+ ["If it rains tomorrow, we ___ at home.",["stay","will stay","would stay"],1],
+ ["If I had a million dollars, I ___ a yacht.",["buy","will buy","would buy"],2],
+ ["Water ___ if you cool it to 0°C.",["freezes","will freeze","would freeze"],0],
+ ["If she ___ harder, she would pass the exam.",["studies","studied","will study"],1]]},
+{t:["Exercise 2. Put the verb in brackets into the correct form","Вправа 2. Поставте дієслово в дужках у правильну форму"],type:"input",items:[
+ ["If I ___ (be) you, I would apologise.",["were","was"]],
+ ["If the weather is good, we ___ (go) hiking.",["will go","'ll go"]],
+ ["If you mix red and blue, you ___ (get) purple.",["get"]],
+ ["She would travel more if she ___ (have) more time.",["had"]],
+ ["If he doesn't hurry, he ___ (miss) the bus.",["will miss","'ll miss"]]]},
+{t:["Exercise 3. Which type of conditional is it?","Вправа 3. Який це тип умовного речення?"],type:"choice",items:[
+ ["If you press this button, the light turns on.",["Zero","First","Second"],0],
+ ["If I lived in Kyiv, I would walk every day.",["Zero","First","Second"],2],
+ ["If it snows tonight, school will be closed.",["Zero","First","Second"],1],
+ ["If you don't water plants, they die.",["Zero","First","Second"],0],
+ ["If I knew her number, I would call her.",["Zero","First","Second"],2]]},
+{t:["Exercise 4. Choose the correct sentence","Вправа 4. Оберіть речення без помилки"],type:"choice",items:[
+ ["A real plan for the future <span class=uk>Реальний план на майбутнє</span>",["If I will see him, I'll tell him.","If I see him, I'll tell him.","If I saw him, I'll tell him."],1],
+ ["An imaginary situation <span class=uk>Уявна ситуація</span>",["If I would win the lottery, I'd travel.","If I win the lottery, I would travel.","If I won the lottery, I would travel."],2],
+ ["A general fact <span class=uk>Загальний факт</span>",["If you heat butter, it will melts.","If you heat butter, it melts.","If you heat butter, it would melt."],1],
+ ["A real possibility <span class=uk>Реальна можливість</span>",["If she is free, she would come.","If she is free, she will come.","If she was free, she will come."],1]]}
+];
+let total=0,got=0;
+const res=document.getElementById('results');
+EX.forEach((e,ei)=>{
+  const s=document.createElement('section');s.className='slide';
+  let h=`<div class="wrap"><h2>${e.t[0]}</h2><p class="uk">${e.t[1]}</p>`;
+  e.items.forEach((it,i)=>{
+    h+=`<div class="q" data-e="${ei}" data-i="${i}"><p>${i+1}. ${it[0]}</p>`;
+    if(e.type==='choice'){h+=`<div class="opts">`+it[1].map((o,k)=>`<button class="o" data-k="${k}">${o}</button>`).join('')+`</div>`}
+    else h+=`<input aria-label="Answer ${i+1}" autocomplete="off"> <button class="o chk">Check / Перевірити</button>`;
+    h+=`<div class="fb"></div></div>`;
+  });
+  s.innerHTML=h+`</div>`;res.before(s);total+=e.items.length;
+});
+document.getElementById('deck').addEventListener('click',ev=>{
+  const b=ev.target.closest('button.o');if(!b)return;
+  const q=b.closest('.q');if(q.dataset.done)return;
+  const e=EX[q.dataset.e],it=e.items[q.dataset.i],fb=q.querySelector('.fb');let ok;
+  if(e.type==='choice'){
+    const k=+b.dataset.k;ok=k===it[2];b.classList.add(ok?'right':'wrong');
+    if(!ok)q.querySelectorAll('.o')[it[2]].classList.add('right');
+    fb.textContent=ok?'Correct! / Правильно!':'Correct answer / Правильна відповідь: '+it[1][it[2]];
+  }else{
+    const inp=q.querySelector('input');
+    const v=inp.value.trim().toLowerCase().replace(/[’`]/g,"'");if(!v)return;
+    ok=it[1].includes(v)||it[1].includes(v.replace(/^will /,"'ll "));
+    q.classList.add(ok?'right':'wrong');
+    fb.textContent=ok?'Correct! / Правильно!':'Correct answer / Правильна відповідь: '+it[1][0];
+  }
+  fb.className='fb '+(ok?'ok':'bad');q.dataset.done=1;if(ok)got++;
+  document.getElementById('score').textContent=got+' / '+total;
+  document.getElementById('verdict').textContent=got===total?'Excellent! All correct. / Чудово! Усе правильно.':got>=total*.7?'Good job! Review the rules where you made mistakes. / Добре! Повторіть правила, де були помилки.':'Review the rule slides and try again. / Перегляньте слайди з правилами і спробуйте ще раз.';
+});
+document.getElementById('score').textContent='0 / '+total;
+document.addEventListener('keydown',ev=>{if(ev.key==='Enter'&&ev.target.tagName==='INPUT')ev.target.parentElement.querySelector('.chk').click()});
+const sl=[...document.querySelectorAll('.slide')];let cur=0;
+function go(n){cur=Math.max(0,Math.min(sl.length-1,n));sl.forEach((s,i)=>s.classList.toggle('on',i===cur));
+  document.getElementById('prog').style.width=((cur+1)/sl.length*100)+'%';
+  document.getElementById('count').textContent=(cur+1)+' / '+sl.length;
+  document.getElementById('prev').disabled=cur===0;document.getElementById('next').disabled=cur===sl.length-1;sl[cur].scrollTop=0}
+document.getElementById('prev').onclick=()=>go(cur-1);
+document.getElementById('next').onclick=()=>go(cur+1);
+document.addEventListener('keydown',ev=>{if(ev.target.tagName==='INPUT')return;
+  if(ev.key==='ArrowRight'||ev.key==='PageDown')go(cur+1);if(ev.key==='ArrowLeft'||ev.key==='PageUp')go(cur-1)});
+go(0);
+</script>
+</body>
+</html>
